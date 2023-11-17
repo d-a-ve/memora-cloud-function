@@ -30,15 +30,10 @@ export default async ({ req, res, log, error }: Context) => {
   const databaseBirthdays = await db.listDocuments(
     process.env.APPWRITE_MEMORA_DB_ID,
     process.env.APPWRITE_BIRTHDAYS_COL_ID,
-    [Query.equal("person_birthday", currentDate.toUTCString())]
+    // [Query.equal("person_birthday", currentDate.toUTCString())]
   );
 
   log(databaseBirthdays);
-  // You can log messages to the console
-  log("Hello, Logs!");
-
-  // If something goes wrong, log an error
-  error("Hello, Errors!");
 
   return res.empty()
 };
