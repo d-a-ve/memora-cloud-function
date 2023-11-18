@@ -1,4 +1,4 @@
-import { Client, Databases, Query } from "node-appwrite";
+import { Client, Databases, Query, Models } from "node-appwrite";
 import { changeDateToString } from "./utils.js";
 
 type Context = {
@@ -10,8 +10,16 @@ type Context = {
 
 type UserBirthdays = {
   userId: string;
+  email: string;
   birthdays: string[];
 };
+
+type BirthdayCol = Models.Document & {
+  person_name: string;
+  person_birthday: string;
+  user_email: string;
+  user_id: string
+}
 
 // This is your Appwrite function
 // It's executed each time we get a request
@@ -27,13 +35,34 @@ export default async ({ req, res, log, error }: Context) => {
 
   const db = new Databases(client);
 
-  const databaseBirthdays = await db.listDocuments(
+  const {total, documents: databaseBirthdays} = await db.listDocuments<BirthdayCol>(
     process.env.APPWRITE_MEMORA_DB_ID,
     process.env.APPWRITE_BIRTHDAYS_COL_ID,
     [Query.equal("person_birthday", currentDate)]
   );
+
+  if(total > 0) {
+    databaseBirthdays.forEach((doc) => {
+      const userBirthdayIndex = currentBirthdays.findIndex((birthday) => birthday.userId === doc.user_id)
+
+      // user is not in array
+      if(userBirthdayIndex === -1) {
+        currentBirthdays.push({
+          userId: doc.user_id,
+          email: doc.user_email,
+          birthdays: [doc.person_name]
+        })
+      } else {
+        // Add the person name to the birthdays list of the user
+        currentBirthdays[userBirthdayIndex].birthdays.push(doc.person_name)
+      }
+    })
+  
+    // TODO: Send mail to the user informing them of the birthdays
+  }
   log(currentDate);
-  log(databaseBirthdays);
+  log(currentBirthdays);
 
   return res.empty()
 };
+
