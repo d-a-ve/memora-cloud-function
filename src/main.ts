@@ -32,7 +32,7 @@ export default async ({ req, res, log, error }: Context) => {
     process.env.APPWRITE_BIRTHDAYS_COL_ID,
     [Query.equal("person_birthday", currentDate)]
   );
-
+  log(currentDate);
   log(databaseBirthdays);
 
   return res.empty()
