@@ -4,5 +4,5 @@ export const changeDateToString = (d: Date): string => {
   const currMonth = currDate.getMonth();
   const currDay = currDate.getDate();
 
-  return `${currYear}-${currMonth}-${currDay}`;
+  return `${currYear}-${currMonth + 1}-${currDay}`;
 }
