@@ -47,7 +47,7 @@ const nodemailerTransporter = nodemailer.createTransport({
 async function sendMails(userBirthdayList: UserBirthdays) {
   // send mail with defined transport object
   const info = await nodemailerTransporter.sendMail({
-    from: `Memora App ${process.env.PROJECT_EMAIL_ADDRESS}`, // sender address
+    from: process.env.PROJECT_EMAIL_ADDRESS, // sender address
     to: userBirthdayList.email, // list of receivers
     subject: "Today's Birthday Names", // Subject line
     text: `Hey there, today is ${userBirthdayList.birthdays.join(
