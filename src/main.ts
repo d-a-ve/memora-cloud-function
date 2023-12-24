@@ -113,7 +113,7 @@ export default async ({req, res, log, error}: Context) => {
     log(currentDate);
     log(currentBirthdays);
   
-    return res.status(200).send("Success!!");
+    return res.empty();
   } catch (e: any) {
     error(`An error happened, ${e}`);
   }
