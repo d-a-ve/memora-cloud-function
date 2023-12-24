@@ -7,6 +7,8 @@ declare global {
           APPWRITE_BIRTHDAYS_COL_ID: string;
           PROJECT_EMAIL_ADDRESS: string;
           PROJECT_EMAIL_PASSWORD: string;
+          MAILTRAP_TEST_USERNAME: string;
+          MAILTRAP_TEST_PASSWORD: string;
         }
     }
 }

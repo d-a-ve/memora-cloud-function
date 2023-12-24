@@ -24,14 +24,22 @@ type BirthdayCol = Models.Document & {
 
 // Nodemailer 
 const nodemailerTransporter = nodemailer.createTransport({
-  host: "smtp.zoho.com",
-  port: 465,
-  secure: true,
+  host: "sandbox.smtp.mailtrap.io",
+  port: 2525,
   auth: {
-    user: process.env.PROJECT_EMAIL_ADDRESS,
-    pass: process.env.PROJECT_EMAIL_PASSWORD,
+    user: "56d9bbca40875e",
+    pass: "********dbe2",
   },
 });
+// const nodemailerTransporter = nodemailer.createTransport({
+//   host: "smtp.zoho.com",
+//   port: 465,
+//   secure: true,
+//   auth: {
+//     user: process.env.PROJECT_EMAIL_ADDRESS,
+//     pass: process.env.PROJECT_EMAIL_PASSWORD,
+//   },
+// });
 
 // async..await is not allowed in global scope, must use a wrapper
 async function sendMails(userBirthdayList: UserBirthdays) {
@@ -105,7 +113,7 @@ export default async ({req, res, log, error}: Context) => {
     log(currentDate);
     log(currentBirthdays);
   
-    return res.empty();
+    return res.status(200).send("Success!!");
   } catch (e: any) {
     error(`An error happened, ${e}`);
   }
