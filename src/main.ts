@@ -30,6 +30,8 @@ const nodemailerTransporter = nodemailer.createTransport({
     user: process.env.MAILTRAP_TEST_USERNAME,
     pass: process.env.MAILTRAP_TEST_PASSWORD,
   },
+  debug: true,
+  logger: true,
 });
 // const nodemailerTransporter = nodemailer.createTransport({
 //   host: "smtp.zoho.com",
@@ -63,6 +65,13 @@ async function sendMails(userBirthdayList: UserBirthdays) {
 // This is your Appwrite function
 export default async ({req, res, log, error}: Context) => {
   try {
+    nodemailerTransporter.verify((error: any, success: any) => {
+      if (error) {
+        log({error});
+      } else {
+        log({success})
+      }
+    })
   
     const currentDate = changeDateToString(new Date());
   
