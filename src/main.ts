@@ -110,7 +110,7 @@ export default async ({req, res, log, error}: Context) => {
     
         log(currentDate);
         log(currentBirthdays);
-        return res.json({ok: true, message: "Email successfully sent"}, 200);
+        return res.json({ok: true, message: "Email successfully sent", mailInfo}, 200);
     }
   
     return res.send("No birthdays today");
