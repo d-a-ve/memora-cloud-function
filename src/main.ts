@@ -112,14 +112,15 @@ export default async ({req, res, log, error}: Context) => {
       });
   
       // TODO: Send mail to the user informing them of the birthdays
+      currentBirthdays.forEach(async (birthday) => {
         log("Message about to be sent");
-        const mailInfo = await sendMails(currentBirthdays[0]);
-  log(mailInfo);
-        log(`Message sent: %s ${mailInfo.messageId}`);
+        const mailInfo = await sendMails(birthday);
+        log(`Message sent: ${mailInfo.messageId}`);
+      })
     
-        log(currentDate);
-        log(currentBirthdays);
-        return res.json({ok: true, message: "Email successfully sent", mailInfo}, 200);
+      log(currentDate);
+      log(currentBirthdays);
+      return res.send("Birthdays sent successfully");
     }
   
     return res.send("No birthdays today");
