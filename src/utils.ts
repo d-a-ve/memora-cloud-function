@@ -5,5 +5,11 @@ export const changeDateToString = (d: Date): string => {
   const currMonth = currDate.getMonth();
   const currDay = currDate.getDate();
 
-  return `${currYear}-${currMonth + 1}-${currDay}`;
-}
+  return `${currYear}-${addZeroIfNeeded(currMonth + 1)}-${addZeroIfNeeded(
+    currDay
+  )}`;
+};
+
+export const addZeroIfNeeded = (num: number): string => {
+  return num < 10 ? `0${num}` : `${num}`;
+};
