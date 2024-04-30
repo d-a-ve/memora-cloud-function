@@ -129,9 +129,10 @@ export default async ({ req, res, log, error }: Context) => {
 
     // log(currentDate);
     // log(currentBirthdays);
+    log("Birthdays seen");
     return res.send("Birthdays seen");
     // return res.send("Birthdays sent successfully");
   } catch (e: any) {
-    error(`An error happened, ${e}`);
+    error(`An error happened`);
   }
 };
