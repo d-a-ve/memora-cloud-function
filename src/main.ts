@@ -66,7 +66,7 @@ type Context = {
 export default async ({ req, log }: Context) => {
   const body = req.body;
 
-  log(body.json());
+  log(body);
 };
 // export default async ({req, res, log, error}: Context) => {
 //   try {
