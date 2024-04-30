@@ -101,38 +101,38 @@ export default async ({ req, res, log, error }: Context) => {
       return res.send("No birthdays today");
     }
 
-    // databaseBirthdays.forEach((doc) => {
-    //   // Check if user exists in the currentBirthdays array
-    //   const userBirthdayIndex = currentBirthdays.findIndex(
-    //     (birthday) => birthday.userId === doc.user_id
-    //   );
+    databaseBirthdays.forEach((doc) => {
+      // Check if user exists in the currentBirthdays array
+      const userBirthdayIndex = currentBirthdays.findIndex(
+        (birthday) => birthday.userId === doc.user_id
+      );
 
-    //   // user is not in array
-    //   if (userBirthdayIndex === -1) {
-    //     currentBirthdays.push({
-    //       userId: doc.user_id,
-    //       email: doc.user_email,
-    //       birthdays: [doc.person_name],
-    //     });
-    //   } else {
-    //     // Add the person name to the birthdays list of the user
-    //     currentBirthdays[userBirthdayIndex].birthdays.push(doc.person_name);
-    //   }
-    // });
+      // user is not in array
+      if (userBirthdayIndex === -1) {
+        currentBirthdays.push({
+          userId: doc.user_id,
+          email: doc.user_email,
+          birthdays: [doc.person_name],
+        });
+        return;
+      }
+
+      // Add the person name to the birthdays list of the user
+      currentBirthdays[userBirthdayIndex].birthdays.push(doc.person_name);
+    });
 
     // // TODO: Send mail to the user informing them of the birthdays
-    // currentBirthdays.forEach(async (birthday) => {
-    //   log("Message about to be sent");
-    //   const mailInfo = await sendMails(birthday);
-    //   log(`Message sent: ${mailInfo.messageId}`);
-    // })
+    for (let birthday of currentBirthdays) {
+      log(`Message about to be sent to ${birthday.email}`);
+      const mailInfo = await sendMails(birthday);
+      log(`Message sent: ${mailInfo.messageId}`);
+    }
 
-    // log(currentDate);
-    // log(currentBirthdays);
-    log("Birthdays seen");
-    return res.send("Birthdays seen");
-    // return res.send("Birthdays sent successfully");
+    log(currentDate);
+    log(currentBirthdays);
+    // return res.send("Birthdays seen");
+    return res.send("Birthdays sent successfully");
   } catch (e: any) {
-    error(`An error happened`);
+    log(`ERROR: An error happened, ${e}`);
   }
 };
