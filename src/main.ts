@@ -91,6 +91,8 @@ export default async ({ req, res, log, error }: Context) => {
         [Query.equal("person_birthday", currentDate)]
       );
 
+    log(total);
+    log(currentDate);
     if (total > 0) {
       // databaseBirthdays.forEach((doc) => {
       //   // Check if user exists in the currentBirthdays array
@@ -118,8 +120,8 @@ export default async ({ req, res, log, error }: Context) => {
       //   log(`Message sent: ${mailInfo.messageId}`);
       // })
 
-      log(currentDate);
-      log(currentBirthdays);
+      // log(currentDate);
+      // log(currentBirthdays);
       return res.send("Birthdays seen");
       // return res.send("Birthdays sent successfully");
     }
