@@ -68,7 +68,7 @@ export default async ({ req, res, log }: Context) => {
 
   log(body);
 
-  res.empty();
+  return res.empty();
 };
 // export default async ({req, res, log, error}: Context) => {
 //   try {
