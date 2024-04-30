@@ -63,10 +63,12 @@ type Context = {
 // }
 
 // This is your Appwrite function
-export default async ({ req, log }: Context) => {
+export default async ({ req, res, log }: Context) => {
   const body = req.body;
 
   log(body);
+
+  res.empty();
 };
 // export default async ({req, res, log, error}: Context) => {
 //   try {
