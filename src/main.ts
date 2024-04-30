@@ -65,6 +65,9 @@ async function sendMails(userBirthdayList: UserBirthdays) {
 // This is your Appwrite function
 export default async ({ req, res, log, error }: Context) => {
   try {
+    const body = req.body;
+
+    log(body);
     // nodemailerTransporter.verify((error: any, success: any) => {
     //   if (error) {
     //     log({error});
@@ -93,40 +96,41 @@ export default async ({ req, res, log, error }: Context) => {
 
     log(total);
     log(currentDate);
-    if (total > 0) {
-      // databaseBirthdays.forEach((doc) => {
-      //   // Check if user exists in the currentBirthdays array
-      //   const userBirthdayIndex = currentBirthdays.findIndex(
-      //     (birthday) => birthday.userId === doc.user_id
-      //   );
-
-      //   // user is not in array
-      //   if (userBirthdayIndex === -1) {
-      //     currentBirthdays.push({
-      //       userId: doc.user_id,
-      //       email: doc.user_email,
-      //       birthdays: [doc.person_name],
-      //     });
-      //   } else {
-      //     // Add the person name to the birthdays list of the user
-      //     currentBirthdays[userBirthdayIndex].birthdays.push(doc.person_name);
-      //   }
-      // });
-
-      // // TODO: Send mail to the user informing them of the birthdays
-      // currentBirthdays.forEach(async (birthday) => {
-      //   log("Message about to be sent");
-      //   const mailInfo = await sendMails(birthday);
-      //   log(`Message sent: ${mailInfo.messageId}`);
-      // })
-
-      // log(currentDate);
-      // log(currentBirthdays);
-      return res.send("Birthdays seen");
-      // return res.send("Birthdays sent successfully");
+    if (!(total > 0)) {
+      log("No birthdays found but this will not run");
+      return res.send("No birthdays today");
     }
 
-    return res.send("No birthdays today");
+    // databaseBirthdays.forEach((doc) => {
+    //   // Check if user exists in the currentBirthdays array
+    //   const userBirthdayIndex = currentBirthdays.findIndex(
+    //     (birthday) => birthday.userId === doc.user_id
+    //   );
+
+    //   // user is not in array
+    //   if (userBirthdayIndex === -1) {
+    //     currentBirthdays.push({
+    //       userId: doc.user_id,
+    //       email: doc.user_email,
+    //       birthdays: [doc.person_name],
+    //     });
+    //   } else {
+    //     // Add the person name to the birthdays list of the user
+    //     currentBirthdays[userBirthdayIndex].birthdays.push(doc.person_name);
+    //   }
+    // });
+
+    // // TODO: Send mail to the user informing them of the birthdays
+    // currentBirthdays.forEach(async (birthday) => {
+    //   log("Message about to be sent");
+    //   const mailInfo = await sendMails(birthday);
+    //   log(`Message sent: ${mailInfo.messageId}`);
+    // })
+
+    // log(currentDate);
+    // log(currentBirthdays);
+    return res.send("Birthdays seen");
+    // return res.send("Birthdays sent successfully");
   } catch (e: any) {
     error(`An error happened, ${e}`);
   }
