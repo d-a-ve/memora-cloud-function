@@ -1,5 +1,5 @@
 import { CourierClient } from "@trycourier/courier";
-import { Client, Databases, Models, Query } from "node-appwrite";
+import { Client, Databases, Models, Query, Users } from "node-appwrite";
 import nodemailer from "nodemailer";
 import { config } from "./config.js";
 import { changeDateToString } from "./utils.js";
@@ -29,16 +29,9 @@ type BirthdayCol = Models.Document & {
 };
 
 // Nodemailer
-const nodemailerTransporter = nodemailer.createTransport({
-  host: "sandbox.smtp.mailtrap.io",
-  port: 2525,
-  auth: {
-    user: process.env.MAILTRAP_TEST_USERNAME,
-    pass: process.env.MAILTRAP_TEST_PASSWORD,
-  },
-  debug: true,
-  logger: true,
-});
+const nodemailerTransporter = nodemailer.createTransport(
+  config.DEV_EMAILING_CONFIG
+);
 
 // async..await is not allowed in global scope, must use a wrapper
 async function sendMails(userBirthdayList: UserBirthdays) {
@@ -59,7 +52,10 @@ async function sendMails(userBirthdayList: UserBirthdays) {
 }
 
 // async..await is not allowed in global scope, must use a wrapper
-async function sendMailswithCourier(userBirthdayList: UserBirthdays) {
+async function sendMailswithCourier<TUserName>(
+  userBirthdayList: UserBirthdays,
+  userName: TUserName
+) {
   const birthday = userBirthdayList.birthdays.join(", ");
 
   const { requestId } = await courier.send({
@@ -69,9 +65,9 @@ async function sendMailswithCourier(userBirthdayList: UserBirthdays) {
         email: "davearonmwan@gmail.com",
       },
       data: {
-        dashboard: "www.memora-tau.vercel.app/dashboard",
+        dashboard: "www.memora-tau.vercel.app",
         birthdayNames: birthday,
-        recipientName: "Another Dave",
+        recipientName: userName,
       },
     },
   });
@@ -80,7 +76,7 @@ async function sendMailswithCourier(userBirthdayList: UserBirthdays) {
 }
 
 // This is your Appwrite function
-export default async ({ req, res, log, error }: Context) => {
+export default async ({ req, res, log }: Context) => {
   try {
     const body = req.body;
 
@@ -135,7 +131,9 @@ export default async ({ req, res, log, error }: Context) => {
     // // TODO: Send mail to the user informing them of the birthdays
     for (let birthday of currentBirthdays) {
       log(`Message about to be sent to ${birthday.email}`);
-      const mailInfo = await sendMailswithCourier(birthday);
+      const users = new Users(client);
+      const userName = await users.get(birthday.userId);
+      const mailInfo = await sendMailswithCourier(birthday, userName);
       log(`Message sent: ${mailInfo}`);
       // const mailInfo = await sendMails(birthday);
       // log(`Message sent: ${mailInfo.messageId}`);
