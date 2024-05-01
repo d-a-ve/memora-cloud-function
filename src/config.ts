@@ -16,4 +16,11 @@ const COURIER = {
   authToken: process.env.COURIER_AUTH_TOKEN,
 };
 
-export const config = { COURIER, DEV_EMAILING_CONFIG, IS_LOCAL };
+const APPWRITE = {
+  projectId: process.env.APPWRITE_PROJECT_ID,
+  apiKey: process.env.APPWRITE_API_KEY,
+  memoraDBId: process.env.APPWRITE_MEMORA_DB_ID,
+  birthdaysColId: process.env.APPWRITE_BIRTHDAYS_COL_ID,
+};
+
+export const config = { COURIER, DEV_EMAILING_CONFIG, IS_LOCAL, APPWRITE };

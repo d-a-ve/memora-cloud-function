@@ -13,3 +13,19 @@ export const changeDateToString = (d: Date): string => {
 export const addZeroIfNeeded = (num: number): string => {
   return num < 10 ? `0${num}` : `${num}`;
 };
+
+export const arrayToCommaSeparatedString = (arr: string[]): string => {
+  const len = arr.length;
+  if (len === 0) return "";
+
+  if (len === 1) {
+    return arr[0];
+  }
+
+  if (len === 2) {
+    return `${arr[0]} and ${arr[1]}`;
+  }
+
+  const lastItem = arr.pop();
+  return `${arr.join(", ")}, and ${lastItem}`;
+};
