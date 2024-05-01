@@ -20,7 +20,7 @@ export default async ({ res, log }: Context) => {
     const { total, documents: databaseBirthdays } =
       await listBirthdayDocuments();
 
-    if (total < 1) {
+    if (total === 0) {
       return res.send("No birthdays found");
     }
 
