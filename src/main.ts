@@ -52,9 +52,9 @@ async function sendMails(userBirthdayList: UserBirthdays) {
 }
 
 // async..await is not allowed in global scope, must use a wrapper
-async function sendMailswithCourier<TUserName>(
+async function sendMailswithCourier(
   userBirthdayList: UserBirthdays,
-  userName: TUserName
+  userName: string
 ) {
   const birthday = userBirthdayList.birthdays.join(", ");
 
@@ -133,7 +133,7 @@ export default async ({ req, res, log, error }: Context) => {
       log(`Message about to be sent to ${birthday.email}`);
       const users = new Users(client);
       const userName = await users.get(birthday.userId);
-      const mailInfo = await sendMailswithCourier(birthday, userName);
+      const mailInfo = await sendMailswithCourier(birthday, userName.name);
       log(`Message sent: ${mailInfo}`);
       // const mailInfo = await sendMails(birthday);
       // log(`Message sent: ${mailInfo.messageId}`);
