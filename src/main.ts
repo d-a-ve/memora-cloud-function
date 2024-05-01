@@ -66,7 +66,7 @@ async function sendMailswithCourier(userBirthdayList: UserBirthdays) {
     message: {
       template: config.COURIER.notificationId,
       to: {
-        email: "example@example.com",
+        email: "davearonmwan@gmail.com",
       },
       data: {
         dashboard: "www.memora-tau.vercel.app/dashboard",
