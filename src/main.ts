@@ -145,5 +145,6 @@ export default async ({ req, res, log, error }: Context) => {
     return res.send("Birthdays sent successfully");
   } catch (e: any) {
     log(`ERROR: An error happened, ${e}`);
+    return res.send("An error happened, check the logs for more info");
   }
 };
