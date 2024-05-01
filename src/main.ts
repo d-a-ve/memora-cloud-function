@@ -76,7 +76,7 @@ async function sendMailswithCourier<TUserName>(
 }
 
 // This is your Appwrite function
-export default async ({ req, res, log }: Context) => {
+export default async ({ req, res, log, error }: Context) => {
   try {
     const body = req.body;
 
