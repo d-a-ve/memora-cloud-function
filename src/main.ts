@@ -3,9 +3,7 @@ import {
   getUserById,
   listBirthdayDocuments,
 } from "./appwrite.js";
-import { config } from "./config.js";
 import { sendMailwithCourier } from "./courier.js";
-import { sendMailWithNodemailer } from "./nodemailer.js";
 
 type Context = {
   req: any;
@@ -48,11 +46,11 @@ export default async ({ res, log }: Context) => {
     for (let birthday of currentBirthdays) {
       log(`Message about to be sent to ${birthday.email}`);
 
-      if (config.IS_LOCAL) {
-        const mailInfo = await sendMailWithNodemailer(birthday);
-        log(`Message sent: ${mailInfo.messageId}`);
-        return;
-      }
+      // if (config.IS_LOCAL) {
+      //   const mailInfo = await sendMailWithNodemailer(birthday);
+      //   log(`Message sent: ${mailInfo.messageId}`);
+      //   return;
+      // }
       const user = await getUserById(birthday.userId);
 
       const mailInfo = await sendMailwithCourier(birthday, user.name);
