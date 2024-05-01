@@ -1,6 +1,12 @@
+import { CourierClient } from "@trycourier/courier";
 import { Client, Databases, Models, Query } from "node-appwrite";
 import nodemailer from "nodemailer";
+import { config } from "./config.js";
 import { changeDateToString } from "./utils.js";
+
+const courier = new CourierClient({
+  authorizationToken: config.COURIER.authToken,
+});
 
 type Context = {
   req: any;
@@ -33,15 +39,6 @@ const nodemailerTransporter = nodemailer.createTransport({
   debug: true,
   logger: true,
 });
-// const nodemailerTransporter = nodemailer.createTransport({
-//   host: "smtp.zoho.com",
-//   port: 465,
-//   secure: true,
-//   auth: {
-//     user: process.env.PROJECT_EMAIL_ADDRESS,
-//     pass: process.env.PROJECT_EMAIL_PASSWORD,
-//   },
-// });
 
 // async..await is not allowed in global scope, must use a wrapper
 async function sendMails(userBirthdayList: UserBirthdays) {
@@ -58,8 +55,28 @@ async function sendMails(userBirthdayList: UserBirthdays) {
     )} birthday</b>. Don't forget to wish them a happy birthday 🎉</p>`, // html body
   });
 
-  // console.log(`Message sent: %s ${info.messageId}`);
   return info;
+}
+
+// async..await is not allowed in global scope, must use a wrapper
+async function sendMailswithCourier(userBirthdayList: UserBirthdays) {
+  const birthday = userBirthdayList.birthdays.join(", ");
+
+  const { requestId } = await courier.send({
+    message: {
+      template: config.COURIER.notificationId,
+      to: {
+        email: "example@example.com",
+      },
+      data: {
+        dashboard: "www.memora-tau.vercel.app/dashboard",
+        birthdayNames: birthday,
+        recipientName: "Another Dave",
+      },
+    },
+  });
+
+  return requestId;
 }
 
 // This is your Appwrite function
@@ -68,13 +85,7 @@ export default async ({ req, res, log, error }: Context) => {
     const body = req.body;
 
     log(body);
-    // nodemailerTransporter.verify((error: any, success: any) => {
-    //   if (error) {
-    //     log({error});
-    //   } else {
-    //     log({success})
-    //   }
-    // })
+    log(config.IS_LOCAL);
 
     const currentDate = changeDateToString(new Date());
 
@@ -124,8 +135,10 @@ export default async ({ req, res, log, error }: Context) => {
     // // TODO: Send mail to the user informing them of the birthdays
     for (let birthday of currentBirthdays) {
       log(`Message about to be sent to ${birthday.email}`);
-      const mailInfo = await sendMails(birthday);
-      log(`Message sent: ${mailInfo.messageId}`);
+      const mailInfo = await sendMailswithCourier(birthday);
+      log(`Message sent: ${mailInfo}`);
+      // const mailInfo = await sendMails(birthday);
+      // log(`Message sent: ${mailInfo.messageId}`);
     }
 
     log(currentDate);
