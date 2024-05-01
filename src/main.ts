@@ -105,7 +105,7 @@ export default async ({ req, res, log, error }: Context) => {
     log(currentDate);
     if (!(total > 0)) {
       log("No birthdays found but this will not run");
-      return res.send("No birthdays today");
+      return res.empty();
     }
 
     databaseBirthdays.forEach((doc) => {
