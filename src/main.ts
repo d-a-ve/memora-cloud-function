@@ -21,7 +21,8 @@ export default async ({ res, log }: Context) => {
       await listBirthdayDocuments();
 
     if (total === 0) {
-      return res.send("No birthdays found");
+      log("No birthdays found");
+      return res.empty();
     }
 
     databaseBirthdays.forEach((doc) => {
