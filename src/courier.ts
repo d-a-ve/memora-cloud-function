@@ -9,7 +9,7 @@ const courier = new CourierClient({
 
 export async function sendMailwithCourier(
   userBirthdayList: UserBirthdays,
-  userName: string
+  { name, email }: { name: string; email: string }
 ) {
   const birthday = arrayToCommaSeparatedString(userBirthdayList.birthdays);
 
@@ -17,12 +17,11 @@ export async function sendMailwithCourier(
     message: {
       template: config.COURIER.notificationId,
       to: {
-        // TODO: remove this email once ready for production
-        email: "davearonmwan@gmail.com",
+        email: email,
       },
       data: {
         birthdayNames: birthday,
-        recipientName: userName,
+        recipientName: name,
       },
     },
   });

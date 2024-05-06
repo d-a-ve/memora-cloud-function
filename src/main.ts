@@ -52,8 +52,8 @@ export default async ({ res, log }: Context) => {
         const mailInfo = await sendMailWithNodemailer(birthday);
         log(`Message sent: ${mailInfo.messageId}`);
       } else {
-        const user = await getUserById(birthday.userId);
-        const mailInfo = await sendMailwithCourier(birthday, user.name);
+        const { name, email } = await getUserById(birthday.userId);
+        const mailInfo = await sendMailwithCourier(birthday, { email, name });
         log(`Message sent: ${mailInfo}`);
       }
     }
