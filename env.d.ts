@@ -11,6 +11,7 @@ declare global {
       MAILTRAP_TEST_PASSWORD: string;
       COURIER_AUTH_TOKEN: string;
       COURIER_BIRTHDAY_NOTIFICATION_ID: string;
+      COURIER_WELCOME_EMAIL_NOTIFICATION_ID: string;
     }
   }
 }

@@ -4,7 +4,7 @@ import {
   listBirthdayDocuments,
 } from "./appwrite.js";
 import { config } from "./config.js";
-import { sendMailwithCourier } from "./courier.js";
+import { sendBirthdayReminderMailWithCourier } from "./courier.js";
 import { sendMailWithNodemailer } from "./nodemailer.js";
 
 type Context = {
@@ -53,7 +53,10 @@ export default async ({ res, log }: Context) => {
         log(`Message sent: ${mailInfo.messageId}`);
       } else {
         const { name, email } = await getUserById(birthday.userId);
-        const mailInfo = await sendMailwithCourier(birthday, { email, name });
+        const mailInfo = await sendBirthdayReminderMailWithCourier(birthday, {
+          email,
+          name,
+        });
         log(`Message sent: ${mailInfo}`);
       }
     }

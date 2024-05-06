@@ -7,7 +7,7 @@ const courier = new CourierClient({
   authorizationToken: config.COURIER.authToken,
 });
 
-export async function sendMailwithCourier(
+export async function sendBirthdayReminderMailWithCourier(
   userBirthdayList: UserBirthdays,
   { name, email }: { name: string; email: string }
 ) {
@@ -15,13 +15,31 @@ export async function sendMailwithCourier(
 
   const { requestId } = await courier.send({
     message: {
-      template: config.COURIER.notificationId,
+      template: config.COURIER.birthdayReminderNotificationId,
       to: {
         email: email,
       },
       data: {
         birthdayNames: birthday,
         recipientName: name,
+      },
+    },
+  });
+
+  return requestId;
+}
+
+export async function sendWelcomeMailWithCourier(
+  { name, email }: { name: string; email: string }
+) {
+  const { requestId } = await courier.send({
+    message: {
+      to: {
+        email: email,
+      },
+      template: config.COURIER.welcomeNotificationId,
+      data: {
+        name: name,
       },
     },
   });

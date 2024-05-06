@@ -12,7 +12,8 @@ const DEV_EMAILING_CONFIG = {
 };
 
 const COURIER = {
-  notificationId: process.env.COURIER_BIRTHDAY_NOTIFICATION_ID,
+  birthdayReminderNotificationId: process.env.COURIER_BIRTHDAY_NOTIFICATION_ID,
+  welcomeNotificationId: process.env.COURIER_WELCOME_EMAIL_NOTIFICATION_ID,
   authToken: process.env.COURIER_AUTH_TOKEN,
 };
 
