@@ -49,7 +49,6 @@ export default async ({ req, res, log, error }: Context) => {
     return res.send(
       "Request went well",
       getCorsHeaders(req),
-      getCorsHeaders(req)
     );
   } catch (e: any) {
     log(`ERROR: An error happened, ${e}`);
