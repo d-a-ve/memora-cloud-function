@@ -41,7 +41,7 @@ export default async ({ req, res, log, error }: Context) => {
     );
   }
 
-  const body = JSON.stringify(req.body);
+  const body = JSON.parse(req.body);
 
   try {
     log(body);
