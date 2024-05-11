@@ -9,7 +9,7 @@ export default async ({ req, res, log }: Context) => {
   try {
     const { body } = req;
 
-    log(body);
+    log(JSON.stringify(body));
     return res.send("Request went well");
   } catch (e: any) {
     log(`ERROR: An error happened, ${e}`);
