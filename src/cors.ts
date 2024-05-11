@@ -12,9 +12,11 @@ export function isOriginPermitted(req: any) {
 
 export function getCorsHeaders(req: any) {
   if (!req.headers["origin"]) return {};
-  
+
   return {
-    // "Content-Type": "application/json; charset=utf-8",
+    "Access-Control-Allow-Headers": "Content-Type",
+    "Content-Type": "application/json",
+    "Access-Control-Allow-Methods": "OPTIONS,POST,GET,PATCH",
     "Access-Control-Allow-Origin":
       !process.env.ALLOWED_ORIGINS || process.env.ALLOWED_ORIGINS === "*"
         ? "*"
