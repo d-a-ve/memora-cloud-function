@@ -29,9 +29,13 @@ export async function sendBirthdayReminderMailWithCourier(
   return requestId;
 }
 
-export async function sendWelcomeMailWithCourier(
-  { name, email }: { name: string; email: string }
-) {
+export async function sendWelcomeMailWithCourier({
+  name,
+  email,
+}: {
+  name: string;
+  email: string;
+}) {
   const { requestId } = await courier.send({
     message: {
       to: {
@@ -40,6 +44,35 @@ export async function sendWelcomeMailWithCourier(
       template: config.COURIER.welcomeNotificationId,
       data: {
         name: name,
+      },
+    },
+  });
+
+  return requestId;
+}
+
+export async function sendFeedbackMailToDevWithCourier({
+  name,
+  email,
+  type,
+  message,
+}: {
+  name: string;
+  email: string;
+  type: string;
+  message: string;
+}) {
+  const { requestId } = await courier.send({
+    message: {
+      to: {
+        email: config.DEVELOPER_EMAIL,
+      },
+      template: config.COURIER.feedbackNotificationId,
+      data: {
+        name,
+        email,
+        type,
+        message,
       },
     },
   });

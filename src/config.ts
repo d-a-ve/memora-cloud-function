@@ -14,6 +14,7 @@ const DEV_EMAILING_CONFIG = {
 const COURIER = {
   birthdayReminderNotificationId: process.env.COURIER_BIRTHDAY_NOTIFICATION_ID,
   welcomeNotificationId: process.env.COURIER_WELCOME_EMAIL_NOTIFICATION_ID,
+  feedbackNotificationId: process.env.COURIER_FEEDBACK_NOTIFICATION_ID,
   authToken: process.env.COURIER_AUTH_TOKEN,
 };
 
@@ -24,4 +25,6 @@ const APPWRITE = {
   birthdaysColId: process.env.APPWRITE_BIRTHDAYS_COL_ID,
 };
 
-export const config = { COURIER, DEV_EMAILING_CONFIG, IS_LOCAL, APPWRITE };
+const DEVELOPER_EMAIL = process.env.DEVELOPER_EMAIL_ADDRESS
+
+export const config = { COURIER, DEV_EMAILING_CONFIG, IS_LOCAL, APPWRITE, DEVELOPER_EMAIL };

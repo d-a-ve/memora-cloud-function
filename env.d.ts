@@ -12,6 +12,8 @@ declare global {
       COURIER_AUTH_TOKEN: string;
       COURIER_BIRTHDAY_NOTIFICATION_ID: string;
       COURIER_WELCOME_EMAIL_NOTIFICATION_ID: string;
+      COURIER_FEEDBACK_NOTIFICATION_ID: string;
+      DEVELOPER_EMAIL_ADDRESS: string;
     }
   }
 }

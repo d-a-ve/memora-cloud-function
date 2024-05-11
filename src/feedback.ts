@@ -1,3 +1,12 @@
+// import { z } from "zod";
+
+// const feedbackSchema = z.object({
+//   name: z.string(),
+//   email: z.string(),
+//   type: z.string(),
+//   message: z.string(),
+// });
+
 type Context = {
   req: any;
   res: any;
@@ -7,9 +16,9 @@ type Context = {
 
 export default async ({ req, res, log }: Context) => {
   try {
-    const { body } = req;
-
-    log(JSON.stringify(body));
+    const body = JSON.stringify(req.body);
+    log(body);
+    // const emailId = sendFeedbackMailToDevWithCourier();
     return res.send("Request went well");
   } catch (e: any) {
     log(`ERROR: An error happened, ${e}`);
