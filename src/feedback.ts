@@ -24,7 +24,7 @@ export default async ({ req, res, log, error }: Context) => {
   }
 
   if (req.method === "OPTIONS") {
-    return res.json({ message: "Cors allowed" }, 200);
+    return res.json({ message: "Cors allowed" }, 200, getCorsHeaders(req));
   }
 
   if (req.headers["content-type"] !== "application/json") {
