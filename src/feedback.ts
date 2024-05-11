@@ -27,10 +27,10 @@ export default async ({ req, res, log, error }: Context) => {
     return res.json({ message: "Cors allowed" }, 200, getCorsHeaders(req));
   }
 
-  if (req.headers["content-type"] !== "application/json") {
-    error("Incorrect content type.");
-    return res.json({ error: "Incorrect content type." }, 415);
-  }
+  // if (req.headers["content-type"] !== "application/json; charset=utf-8") {
+  //   error("Incorrect content type.");
+  //   return res.json({ error: "Incorrect content type." }, 415);
+  // }
 
   if (!isOriginPermitted(req)) {
     error("Origin not permitted.");

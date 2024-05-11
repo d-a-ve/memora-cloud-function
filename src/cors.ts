@@ -14,8 +14,9 @@ export function getCorsHeaders(req: any) {
   if (!req.headers["origin"]) return {};
 
   return {
-    "Access-Control-Allow-Headers": "Content-Type",
-    "Content-Type": "application/json",
+    "Access-Control-Allow-Headers":
+      "Access-Control-Allow-Headers, Origin, Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers",
+    "Content-Type": "application/json; charset=utf-8",
     "Access-Control-Allow-Methods": "OPTIONS,POST,GET,PATCH",
     "Access-Control-Allow-Origin":
       !process.env.ALLOWED_ORIGINS || process.env.ALLOWED_ORIGINS === "*"
