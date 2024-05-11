@@ -1,5 +1,7 @@
 // import { z } from "zod";
 
+import { getCorsHeaders, isOriginPermitted } from "./cors.js";
+
 // const feedbackSchema = z.object({
 //   name: z.string(),
 //   email: z.string(),
@@ -14,14 +16,31 @@ type Context = {
   error: (msg: any) => void;
 };
 
-export default async ({ req, res, log }: Context) => {
+export default async ({ req, res, log, error }: Context) => {
+  if (!process.env.ALLOWED_ORIGINS || process.env.ALLOWED_ORIGINS === "*") {
+    log(
+      "WARNING: Allowing requests from any origin - this is a security risk!"
+    );
+  }
+
+  if (req.headers["content-type"] !== "application/json") {
+    error("Incorrect content type.");
+    return res.status(415).json({ error: "Incorrect content type." });
+  }
+
+  if (!isOriginPermitted(req)) {
+    error("Origin not permitted.");
+    return res.status(403).json({ error: "Origin not permitted" });
+  }
+
+  const body = JSON.stringify(req.body);
+
   try {
-    const body = JSON.stringify(req.body);
     log(body);
     // const emailId = sendFeedbackMailToDevWithCourier();
-    return res.send("Request went well");
+    return res.send("Request went well", getCorsHeaders(req));
   } catch (e: any) {
     log(`ERROR: An error happened, ${e}`);
-    return res.send("An error happened, check the logs for more info");
+    return res.send("An error happened, check the logs for more info", getCorsHeaders(req));
   }
 };
