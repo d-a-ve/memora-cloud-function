@@ -15,6 +15,7 @@ export function getCorsHeaders(req: any) {
 
   return {
     // "Access-Control-Allow-Headers": "Origin, Accept, , Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers, Access-Control-Allow-Origin",
+    "Access-Control-Allow-Headers": "Content-Type",
     "Content-Type": "application/json; charset=utf-8",
     // "Access-Control-Allow-Methods": "OPTIONS,POST,GET,PATCH",
     "Access-Control-Allow-Origin": '*'
