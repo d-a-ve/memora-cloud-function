@@ -23,6 +23,10 @@ export default async ({ req, res, log, error }: Context) => {
     );
   }
 
+  if (req.method === "OPTIONS") {
+    return res.status(200).json({ message: "Cors allowed" });
+  }
+
   if (req.headers["content-type"] !== "application/json") {
     error("Incorrect content type.");
     return res.status(415).json({ error: "Incorrect content type." });
@@ -41,6 +45,9 @@ export default async ({ req, res, log, error }: Context) => {
     return res.send("Request went well", getCorsHeaders(req));
   } catch (e: any) {
     log(`ERROR: An error happened, ${e}`);
-    return res.send("An error happened, check the logs for more info", getCorsHeaders(req));
+    return res.send(
+      "An error happened, check the logs for more info",
+      getCorsHeaders(req)
+    );
   }
 };
