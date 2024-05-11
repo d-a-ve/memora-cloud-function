@@ -34,7 +34,11 @@ export default async ({ req, res, log, error }: Context) => {
 
   if (!isOriginPermitted(req)) {
     error("Origin not permitted.");
-    return res.json({ error: "Origin not permitted" }, 403);
+    return res.json(
+      { error: "Origin not permitted" },
+      403,
+      getCorsHeaders(req)
+    );
   }
 
   const body = JSON.stringify(req.body);
@@ -42,7 +46,11 @@ export default async ({ req, res, log, error }: Context) => {
   try {
     log(body);
     // const emailId = sendFeedbackMailToDevWithCourier();
-    return res.send("Request went well", getCorsHeaders(req));
+    return res.send(
+      "Request went well",
+      getCorsHeaders(req),
+      getCorsHeaders(req)
+    );
   } catch (e: any) {
     log(`ERROR: An error happened, ${e}`);
     return res.send(
