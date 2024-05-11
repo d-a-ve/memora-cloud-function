@@ -24,17 +24,17 @@ export default async ({ req, res, log, error }: Context) => {
   }
 
   if (req.method === "OPTIONS") {
-    return res.status(200).json({ message: "Cors allowed" });
+    return res.json({ message: "Cors allowed" }, 200);
   }
 
   if (req.headers["content-type"] !== "application/json") {
     error("Incorrect content type.");
-    return res.status(415).json({ error: "Incorrect content type." });
+    return res.json({ error: "Incorrect content type." }, 415);
   }
 
   if (!isOriginPermitted(req)) {
     error("Origin not permitted.");
-    return res.status(403).json({ error: "Origin not permitted" });
+    return res.json({ error: "Origin not permitted" }, 403);
   }
 
   const body = JSON.stringify(req.body);
