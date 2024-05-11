@@ -1,6 +1,7 @@
 // import { z } from "zod";
 
 import { getCorsHeaders, isOriginPermitted } from "./cors.js";
+import { sendFeedbackMailToDevWithCourier } from "./courier.js";
 
 // const feedbackSchema = z.object({
 //   name: z.string(),
@@ -16,6 +17,13 @@ type Context = {
   error: (msg: any) => void;
 };
 
+const FeedbackType = {
+  DEFAULT: "default",
+  ISSUE: "issue",
+  FEATURE: "feature",
+  MESSAGE: "message",
+} as const;
+
 export default async ({ req, res, log, error }: Context) => {
   if (!process.env.ALLOWED_ORIGINS || process.env.ALLOWED_ORIGINS === "*") {
     log(
@@ -23,13 +31,8 @@ export default async ({ req, res, log, error }: Context) => {
     );
   }
 
-  if (req.method === "OPTIONS") {
-    return res.json({ message: "Cors allowed" }, 200, getCorsHeaders(req));
-  }
-
-  // if (req.headers["content-type"] !== "application/json; charset=utf-8") {
-  //   error("Incorrect content type.");
-  //   return res.json({ error: "Incorrect content type." }, 415);
+  // if (req.method === "OPTIONS") {
+  //   return res.json({ message: "Cors allowed" }, 200, getCorsHeaders(req));
   // }
 
   if (!isOriginPermitted(req)) {
@@ -41,23 +44,62 @@ export default async ({ req, res, log, error }: Context) => {
     );
   }
 
-  const body = req.body;
-
   try {
-    log(body);
-    // const emailId = sendFeedbackMailToDevWithCourier();
-    return res.json(
-      {message: "Request went well"},
+    const { type, message, username, email } = req.body;
 
-      200,
-      getCorsHeaders(req),
-    );
-  } catch (e: any) {
-    log(`ERROR: An error happened, ${e}`);
+    log({ type, message, username, email });
+    if (message.length < 1) {
+      log("message cannot be empty");
+      return res.json(
+        { error: "Please fill your message, message cannot be empty" },
+        403,
+        getCorsHeaders(req)
+      );
+    }
+
+    if (type === FeedbackType.DEFAULT) {
+      log("type cannot be default");
+      return res.json(
+        { error: "Invalid feedback type provided" },
+        403,
+        getCorsHeaders(req)
+      );
+    }
+
+    if (username.length < 1) {
+      log("username cannot be empty");
+      return res.json(
+        { error: "Username was not provided, please login again." },
+        403,
+        getCorsHeaders(req)
+      );
+    }
+
+    if (email.length < 1) {
+      log("email cannot be empty");
+      return res.json(
+        { error: "Email was not provided, please login again." },
+        403,
+        getCorsHeaders(req)
+      );
+    }
+
+    const emailId = await sendFeedbackMailToDevWithCourier({
+      email,
+      name: username,
+      message,
+      type,
+    });
+
+    log({ emailId: "Email sent successfully" });
+
     return res.json(
-      {error: "An error happened, check the logs for more info"},
-      404,
+      { message: "Email sent to the developer successfully" },
+      200,
       getCorsHeaders(req)
     );
+  } catch (e: any) {
+    log(`ERROR: An error happened, ${e.message}`);
+    return res.json({ error: e.message }, e.code, getCorsHeaders(req));
   }
 };
