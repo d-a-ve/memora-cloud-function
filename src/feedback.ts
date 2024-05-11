@@ -48,12 +48,15 @@ export default async ({ req, res, log, error }: Context) => {
     // const emailId = sendFeedbackMailToDevWithCourier();
     return res.json(
       {message: "Request went well"},
+
+      200,
       getCorsHeaders(req),
     );
   } catch (e: any) {
     log(`ERROR: An error happened, ${e}`);
     return res.json(
       {error: "An error happened, check the logs for more info"},
+      404,
       getCorsHeaders(req)
     );
   }
