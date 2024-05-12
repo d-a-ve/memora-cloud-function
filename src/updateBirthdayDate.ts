@@ -25,13 +25,6 @@ export default async ({ res, log }: Context) => {
       return res.empty();
     }
 
-    documents.forEach(async (doc) => {
-      await updateBirthdayDateDocuments({
-        docId: doc.$id,
-        data: { hasBirthdayDateUpdated: false },
-      });
-    })
-
     // use for so i can make use of 'continue'
     for (let i = 0; i < documents.length; i++) {
       const doc = documents[i];
