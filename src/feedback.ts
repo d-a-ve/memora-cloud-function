@@ -31,57 +31,53 @@ export default async ({ req, res, log, error }: Context) => {
     );
   }
 
-  // if (req.method === "OPTIONS") {
-  //   return res.json({ message: "Cors allowed" }, 200, getCorsHeaders(req));
-  // }
-
-  if (!isOriginPermitted(req)) {
-    error("Origin not permitted.");
-    return res.json(
-      { error: "Origin not permitted" },
-      403,
-      getCorsHeaders(req)
-    );
-  }
-
   try {
+    if (!isOriginPermitted(req)) {
+      error("Origin not permitted.");
+      throw new Error("Origin not permitted.");
+    }
+
     const { type, message, username, email } = req.body;
 
     log({ type, message, username, email });
     if (message.length < 1) {
       log("message cannot be empty");
-      return res.json(
-        { error: "Please fill your message, message cannot be empty" },
-        403,
-        getCorsHeaders(req)
-      );
+      throw new Error("Please fill your message, message cannot be empty");
+      // return res.json(
+      //   { error: "Please fill your message, message cannot be empty" },
+      //   403,
+      //   getCorsHeaders(req)
+      // );
     }
 
     if (type === FeedbackType.DEFAULT) {
       log("type cannot be default");
-      return res.json(
-        { error: "Invalid feedback type provided" },
-        403,
-        getCorsHeaders(req)
-      );
+      throw new Error("Invalid feedback type provided");
+      // return res.json(
+      //   { error: "Invalid feedback type provided" },
+      //   403,
+      //   getCorsHeaders(req)
+      // );
     }
 
     if (username.length < 1) {
       log("username cannot be empty");
-      return res.json(
-        { error: "Username was not provided, please login again." },
-        403,
-        getCorsHeaders(req)
-      );
+      throw new Error("Username was not provided, please login again.");
+      // return res.json(
+      //   { error: "Username was not provided, please login again." },
+      //   403,
+      //   getCorsHeaders(req)
+      // );
     }
 
     if (email.length < 1) {
       log("email cannot be empty");
-      return res.json(
-        { error: "Email was not provided, please login again." },
-        403,
-        getCorsHeaders(req)
-      );
+      throw new Error("Email was not provided, please login again.");
+      // return res.json(
+      //   { error: "Email was not provided, please login again." },
+      //   403,
+      //   getCorsHeaders(req)
+      // );
     }
 
     const emailId = await sendFeedbackMailToDevWithCourier({
@@ -100,6 +96,7 @@ export default async ({ req, res, log, error }: Context) => {
     );
   } catch (e: any) {
     log(`ERROR: An error happened, ${e.message}`);
-    return res.json({ error: e.message }, e.code, getCorsHeaders(req));
+    throw e;
+    // return res.json({ error: e.message }, e.code, getCorsHeaders(req));
   }
 };
