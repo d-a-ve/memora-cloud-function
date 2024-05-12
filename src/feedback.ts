@@ -1,14 +1,5 @@
-// import { z } from "zod";
-
 import { getCorsHeaders, isOriginPermitted } from "./cors.js";
 import { sendFeedbackMailToDevWithCourier } from "./courier.js";
-
-// const feedbackSchema = z.object({
-//   name: z.string(),
-//   email: z.string(),
-//   type: z.string(),
-//   message: z.string(),
-// });
 
 type Context = {
   req: any;
