@@ -41,7 +41,7 @@ export const listBirthdayDocumentsWithoutDateUpdated = () =>
     config.APPWRITE.birthdaysColId,
     [
       Query.isNull("hasBirthdayDateUpdated"),
-      // Query.notEqual("hasBirthdayDateUpdated", true),
+      Query.equal("hasBirthdayDateUpdated", false),
     ]
   );
 
@@ -65,6 +65,15 @@ export const createBirthdayDocument = ({ data }: { data: BirthdayData }) =>
     config.APPWRITE.birthdaysColId,
     uniqueId,
     data
+  );
+
+export const updateAttributeInBirthdayCol = () =>
+  db.updateBooleanAttribute(
+    config.APPWRITE.memoraDBId,
+    config.APPWRITE.birthdaysColId,
+    "hasBirthdayDateUpdated", // key
+    false, // required
+    false // default
   );
 
 export const getUserById = (userId: string) => users.get(userId);

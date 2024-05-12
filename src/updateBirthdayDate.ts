@@ -1,7 +1,7 @@
 import { formatISO } from "date-fns/formatISO";
 import { isPast } from "date-fns/isPast";
 import { isToday } from "date-fns/isToday";
-import { listBirthdayDocumentsWithoutDateUpdated } from "./appwrite.js";
+import { listBirthdayDocumentsWithoutDateUpdated, updateAttributeInBirthdayCol } from "./appwrite.js";
 
 type Context = {
   req: any;
@@ -12,6 +12,9 @@ type Context = {
 
 export default async ({ res, log }: Context) => {
   try {
+    const attr = await updateAttributeInBirthdayCol();
+
+    log(attr);
     const { total, documents } =
       await listBirthdayDocumentsWithoutDateUpdated();
 
