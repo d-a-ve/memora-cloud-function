@@ -40,8 +40,8 @@ export const listBirthdayDocumentsWithoutDateUpdated = () =>
     config.APPWRITE.memoraDBId,
     config.APPWRITE.birthdaysColId,
     [
-      Query.isNotNull("hasBirthdayDateUpdated"),
-      // Query.equal("hasBirthdayDateUpdated", false),
+      // Query.isNotNull("hasBirthdayDateUpdated"),
+      Query.equal("hasBirthdayDateUpdated", 'null'),
     ]
   );
 
