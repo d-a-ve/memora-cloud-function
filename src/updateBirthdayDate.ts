@@ -2,6 +2,7 @@ import { formatISO } from "date-fns/formatISO";
 import { isPast } from "date-fns/isPast";
 import { isToday } from "date-fns/isToday";
 import {
+  createBirthdayDocument,
   listBirthdayDocumentsWithoutDateUpdated,
   updateBirthdayDateDocuments,
 } from "./appwrite.js";
@@ -18,8 +19,6 @@ export default async ({ res, log }: Context) => {
     const { total, documents } =
       await listBirthdayDocumentsWithoutDateUpdated();
 
-    log(total);
-    log(documents);
     if (total === 0) {
       log("No documents found");
       return res.empty();
@@ -57,20 +56,20 @@ export default async ({ res, log }: Context) => {
 
       log(newDocDate);
       // if true, create a new document the same data but a new date
-      // await createBirthdayDocument({
-      //   data: {
-      //     user_id: doc.user_id,
-      //     user_email: doc.user_email,
-      //     person_name: doc.person_name,
-      //     person_birthday: newDocDate,
-      //   },
-      // });
+      await createBirthdayDocument({
+        data: {
+          user_id: doc.user_id,
+          user_email: doc.user_email,
+          person_name: doc.person_name,
+          person_birthday: newDocDate,
+        },
+      });
 
       // once created, update the current document to show that the date has been updated
-      // await updateBirthdayDateDocuments({
-      //   docId: doc.$id,
-      //   data: { hasBirthdayDateUpdated: false },
-      // });
+      await updateBirthdayDateDocuments({
+        docId: doc.$id,
+        data: { hasBirthdayDateUpdated: true },
+      });
 
       log(
         `New date created for ${doc.person_name} with birthday ${newDocDate}`
