@@ -25,6 +25,13 @@ export default async ({ res, log }: Context) => {
       return res.empty();
     }
 
+    documents.forEach(async (doc) => {
+      await updateBirthdayDateDocuments({
+        docId: doc.$id,
+        data: { hasBirthdayDateUpdated: false },
+      });
+    })
+
     // use for so i can make use of 'continue'
     for (let i = 0; i < documents.length; i++) {
       const doc = documents[i];
@@ -67,10 +74,10 @@ export default async ({ res, log }: Context) => {
       // });
 
       // once created, update the current document to show that the date has been updated
-      await updateBirthdayDateDocuments({
-        docId: doc.$id,
-        data: { hasBirthdayDateUpdated: false },
-      });
+      // await updateBirthdayDateDocuments({
+      //   docId: doc.$id,
+      //   data: { hasBirthdayDateUpdated: false },
+      // });
 
       log(
         `New date created for ${doc.person_name} with birthday ${newDocDate}`
