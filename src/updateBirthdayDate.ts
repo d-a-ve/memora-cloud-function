@@ -29,7 +29,7 @@ export default async ({ res, log }: Context) => {
       // get birthday date
       const docDate = new Date(doc.person_birthday);
       // check if date is in past
-      const isBirthdayDateTodayOrInPast = isToday(docDate) && isPast(docDate);
+      const isBirthdayDateTodayOrInPast = !isToday(docDate) && isPast(docDate);
 
       // if false, skip current iteration
       if (!isBirthdayDateTodayOrInPast) {
