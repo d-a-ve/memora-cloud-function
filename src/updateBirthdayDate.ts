@@ -1,7 +1,10 @@
 import { formatISO } from "date-fns/formatISO";
 import { isPast } from "date-fns/isPast";
 import { isToday } from "date-fns/isToday";
-import { listBirthdayDocumentsWithoutDateUpdated, updateAttributeInBirthdayCol } from "./appwrite.js";
+import {
+  listBirthdayDocumentsWithoutDateUpdated,
+  updateBirthdayDateDocuments,
+} from "./appwrite.js";
 
 type Context = {
   req: any;
@@ -12,9 +15,6 @@ type Context = {
 
 export default async ({ res, log }: Context) => {
   try {
-    const attr = await updateAttributeInBirthdayCol();
-
-    log(attr);
     const { total, documents } =
       await listBirthdayDocumentsWithoutDateUpdated();
 
@@ -66,11 +66,11 @@ export default async ({ res, log }: Context) => {
       //   },
       // });
 
-      // // once created, update the current document to show that the date has been updated
-      // await updateBirthdayDateDocuments({
-      //   docId: doc.$id,
-      //   data: { hasBirthdayDateUpdated: true },
-      // });
+      // once created, update the current document to show that the date has been updated
+      await updateBirthdayDateDocuments({
+        docId: doc.$id,
+        data: { hasBirthdayDateUpdated: false },
+      });
 
       log(
         `New date created for ${doc.person_name} with birthday ${newDocDate}`
