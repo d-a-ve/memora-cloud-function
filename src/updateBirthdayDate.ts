@@ -15,6 +15,8 @@ export default async ({ res, log }: Context) => {
     const { total, documents } =
       await listBirthdayDocumentsWithoutDateUpdated();
 
+    log(total);
+    log(documents);
     if (total === 0) {
       log("No documents found");
       return res.empty();
